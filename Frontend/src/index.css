@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@layer components{
+    .input-box-border{
+        @apply p-4 rounded-lg shadow-[0px_54px_55px_rgba(0,0,0,0.25),0px_-12px_30px_rgba(0,0,0,0.12),0px_4px_6px_rgba(0,0,0,0.12),0px_12px_13px_rgba(0,0,0,0.17),0px_-3px_5px_rgba(0,0,0,0.09)]
+    }
+
+    .result-box-border{
+        @apply shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]
+        ;
+    }
+}

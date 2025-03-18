@@ -1,0 +1,42 @@
+{
+  "functional_groups": [
+    {
+      "name": "example_functional_group",
+      "A": {
+        "A_OS": 1.2,
+        "A_HOMO-": -5.6,
+        "A_HOMO+": -4.2,
+        "A_IE-": 7.8,
+        "A_IE+": 9.1,
+        "A_LUMO-": -2.3,
+        "A_LUMO+": 1.5,
+        "A_X-": 3.4,
+        "A_X+": 4.1,
+        "A_Z_radii-": 0.9,
+        "A_Z_radii+": 1.2,
+        "A_e_affin-": -0.5,
+        "A_e_affin+": 0.8
+      },
+      "B": {
+        "B_OS": 2.1,
+        "B_HOMO-": -6.3,
+        "B_HOMO+": -3.9,
+        "B_IE-": 8.5,
+        "B_IE+": 10.0,
+        "B_LUMO-": -1.8,
+        "B_LUMO+": 2.0,
+        "B_X-": 3.9,
+        "B_X+": 4.5,
+        "B_Z_radii-": 1.1,
+        "B_Z_radii+": 1.4,
+        "B_e_affin-": -0.3,
+        "B_e_affin+": 1.0
+      },
+      "PBE_band_gap": null,
+      "μ": null,
+      "μĀ": null,
+      "μ𝐵̅": null,
+      "t": null
+    }
+  ]
+}
