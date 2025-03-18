@@ -125,20 +125,8 @@ perovskite_bandgap_prediction/
 
 ---
 
-## 8. Notes  
+## 8. Team 
 
-- Ensure the dataset matches expected column names.  
-- Preprocessing must be run before training.  
-- Encoders must be used consistently in preprocessing and inference.  
-
----
-
-## 9. Future Improvements  
-
-- Try different machine learning models.  
-- Optimize hyperparameters.  
-- Extend API for batch predictions.  
-
----
-
-This project enables automated band gap prediction using machine learning. Follow the steps above to preprocess, train, and deploy the models.
+- Garv Goel (Team Lead)
+- Keshav Sharma
+- Suvrat Mittal
