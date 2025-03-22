@@ -127,6 +127,6 @@ perovskite_bandgap_prediction/
 
 ## 8. Team 
 
-- Garv Goel (Team Leader)
+- Garv Goel (Team Lead)
 - Keshav Sharma
 - Suvrat Mittal
