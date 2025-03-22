@@ -93,12 +93,8 @@ def predict():
         return jsonify({
             "classification": "Insulator" if is_insulator == 1 else "Conductor",
             "predicted_band_gap": float(band_gap) if band_gap is not None else None,
-            "prediction_details": {
-                "is_insulator_value": int(is_insulator),
-                "input_shape": X.shape,
-                "feature_count": X.shape[1],
             }
-        })
+        )
     
     except Exception as e:
         print(f"Prediction error: {e}")
