@@ -1,40 +1,64 @@
 import os
-import numpy as np
 import pickle
-from math import sqrt
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# Load preprocessed data for regression
-data_path = "data/preprocessed.npz"
+# Load dataset
+data_path = "data/perovskite_data.csv"
 if not os.path.exists(data_path):
-    raise FileNotFoundError(f"Preprocessed data file not found at {data_path}")
+    raise FileNotFoundError(f"Dataset not found at {data_path}")
 
-data = np.load(data_path, allow_pickle=True)
-X_train_reg = data['X_train_reg']
-X_test_reg  = data['X_test_reg']
-y_train_reg = data['y_train_reg']
-y_test_reg  = data['y_test_reg']
+df = pd.read_csv(data_path)
 
-# Initialize and train the Random Forest Regressor
-regressor = RandomForestRegressor(n_estimators=100, random_state=42)
-regressor.fit(X_train_reg, y_train_reg)
+# Identify categorical and numerical columns
+categorical_cols = ["functional group", "A", "A'", "Bi", "B'"]  # Modify if needed
+numerical_cols = [col for col in df.columns if col not in categorical_cols + ["PBE band gap"]]
 
-# Predict on the test set for regression
-y_pred_reg = regressor.predict(X_test_reg)
+# Encode categorical columns
+encoders = {}
+for col in categorical_cols:
+    le = LabelEncoder()
+    df[col] = le.fit_transform(df[col])  # Convert to numerical
+    encoders[col] = le  # Store encoder for later use
 
-# Evaluate the regression model
-mse = mean_squared_error(y_test_reg, y_pred_reg)
-rmse = sqrt(mse)
-r2 = r2_score(y_test_reg, y_pred_reg)
-
-print("Regression Model Performance:")
-print(f"RMSE : {rmse:.3f}")
-print(f"R^2  : {r2:.3f}")
-
-# Save the trained regression model
+# Save label encoders
 os.makedirs("models", exist_ok=True)
-with open("models/regression_model.pkl", "wb") as f:
+with open("models/label_encoders.pkl", "wb") as f:
+    pickle.dump(encoders, f)
+
+# Standardize numerical features
+scaler = StandardScaler()
+df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
+
+# Save the scaler
+with open("models/scaler.pkl", "wb") as f:
+    pickle.dump(scaler, f)
+
+# Define target variable
+X = df.drop(columns=["PBE band gap"])
+y = df["PBE band gap"]
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train RandomForestRegressor
+regressor = RandomForestRegressor(n_estimators=200, random_state=42, n_jobs=-1)
+regressor.fit(X_train, y_train)
+
+# Evaluate model
+y_pred = regressor.predict(X_test)
+mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f"Model Performance:\n MAE: {mae:.3f}, MSE: {mse:.3f}, R²: {r2:.3f}")
+
+# Save trained model
+with open("models/regressor.pkl", "wb") as f:
     pickle.dump(regressor, f)
 
-print("Regression model training complete! Model saved to 'models/regression_model.pkl'")
+print("Regressor model saved successfully!")

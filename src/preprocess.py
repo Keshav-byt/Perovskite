@@ -61,6 +61,27 @@ with open("models/scaler.pkl", "wb") as f:
 print("Data after preprocessing:")
 print(df.head())
 
+# Create mappings for functional group → anions, cations
+functional_group_mapping = df.groupby("functional group")[["A", "A'", "Bi", "B'"]].first().to_dict(orient="index")
+
+# Define which columns to use
+ie_columns = ["A_IE+", "B_IE+"]  # These are the two IE columns
+
+# Check if columns exist before grouping
+available_ie_cols = [col for col in ie_columns if col in df.columns]
+
+if available_ie_cols:
+    ie_mapping = df.groupby(available_ie_cols)[["A_HOMO-", "A_LUMO-", "B_HOMO-", "B_LUMO-"]].first().to_dict(orient="index")
+else:
+    raise KeyError("No valid 'IE' columns found. Please check dataset column names.")
+
+# Save the IE mapping for use in the API
+import pickle
+with open("models/feature_mappings.pkl", "wb") as f:
+    pickle.dump({"functional_group_mapping": functional_group_mapping, "ie_mapping": ie_mapping}, f)
+
+print("Feature mappings saved successfully!")
+
 # Split data for classification and regression tasks
 # For classification: target is whether PBE band gap is >= 0.5 eV
 X = df.drop(columns=["PBE band gap"])
